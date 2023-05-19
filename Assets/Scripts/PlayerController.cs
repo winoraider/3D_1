@@ -18,6 +18,6 @@ public class PlayerController : MonoBehaviour
         var h = Input.GetAxis("Horizontal");
         var v = Input.GetAxis("Vertical");
         var movement = new Vector3(h,0,v);
-        rb.AddForce(movement);
+        rb.AddForce(movement*speed);
     }
 }
