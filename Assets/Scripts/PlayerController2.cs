@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController2 : MonoBehaviour
 {
+    [SerializeField] ParticleSystem explosionParticle;
+    [SerializeField] ParticleSystem dirtParticle;
     private Rigidbody playerRb;
     [SerializeField] float jumpForce;
     [SerializeField] float gravityModifier;
@@ -27,6 +29,7 @@ public class PlayerController2 : MonoBehaviour
             playerRb.AddForce(Vector3.up * jumpForce,ForceMode.Impulse);
             isOnGround = false;
             playerAnim.SetTrigger("Jump_trig");
+            dirtParticle.Stop();
         }
     }
     //衝突が起きたら実行
@@ -35,12 +38,21 @@ public class PlayerController2 : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
+            if(gameOver == false)
+            {
+                dirtParticle.Play();
+            }
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
-            gameOver = true;
-            playerAnim.SetBool("Crouch_b", true);
-            /*playerAnim.SetInteger("DeathType_int", 2);*/
+            playerAnim.SetBool("Death_b", true);
+            playerAnim.SetInteger("DeathType_int", 1);
+            if(gameOver == false)
+            {
+                explosionParticle.Play();
+                gameOver = true;
+            }
+            dirtParticle.Stop();
         }
     }
 }
